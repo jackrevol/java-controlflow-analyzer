@@ -13,8 +13,7 @@ import java.util.Set;
 @Getter
 public class SourceFile {
 
-	private byte[] sourceCode;
-	private String encoding;
+	private String sourceCode;
 
 	// many classes are can exist in one source code
 	private Set<ASTNode> classAstNodes;

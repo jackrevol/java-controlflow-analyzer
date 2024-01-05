@@ -1,5 +1,6 @@
 package com.jackrevol.models;
 
+import com.google.common.collect.Lists;
 import org.eclipse.jdt.core.dom.ASTNode;
 
 import lombok.Getter;
@@ -20,6 +21,10 @@ public class Function {
 	private List<CodeBlock> codeBlocks;
 
 	private String name;
+
+	public Function(){
+		codeBlocks= Lists.newArrayList();
+	}
 
 	public void addToCodeBlocks(CodeBlock codeBlock){
 		codeBlocks.add(codeBlock);

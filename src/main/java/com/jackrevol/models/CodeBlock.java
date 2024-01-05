@@ -29,6 +29,7 @@ public class CodeBlock {
 
 	private List<Decision> decisions;
 
+
 	public CodeBlock(Function parentFunction) {
 		this.statementNodes = Lists.newArrayList();
 		this.predecessors = Lists.newArrayList();
@@ -60,6 +61,16 @@ public class CodeBlock {
 
 	public boolean addAllAnonymousFunctionInfo(List<Function> anonymousFunctionInfos) {
 		return this.functions.addAll(anonymousFunctionInfos);
+	}
+
+	public String getStatementsString(){
+		StringBuilder stringBuilder = new StringBuilder();
+
+		for(ASTNode statementNode : statementNodes){
+			stringBuilder.append(statementNode.toString());
+		}
+
+		return stringBuilder.toString();
 	}
 
 }

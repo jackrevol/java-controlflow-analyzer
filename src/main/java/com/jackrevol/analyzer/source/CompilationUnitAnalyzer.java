@@ -14,30 +14,21 @@ import java.util.List;
 
 public class CompilationUnitAnalyzer {
 
-	public SourceFile analyze(byte[] contents, String encoding, String fileName) {
+	public SourceFile analyze(String sourceCode){
 		SourceFile sourceFile = new SourceFile();
-		sourceFile.setEncoding(encoding);
-		sourceFile.setSourceCode(contents);
+		sourceFile.setSourceCode(sourceCode);
 		return generateCompilationUnit(sourceFile);
 	}
 
 	private SourceFile generateCompilationUnit(SourceFile sourceFile) {
 		JavaASTParser parser = new JavaASTParser();
 		ASTNode astNode;
-		String sourceCode;
-		// create ast
-		try {
-			sourceCode = new String(sourceFile.getSourceCode(), sourceFile.getEncoding());
-			astNode = parser.parseSourceFile(sourceCode);
-		} catch (UnsupportedEncodingException e) {
-			sourceFile.setResult(false);
-			sourceFile.setMessage(e.getMessage());
-			return sourceFile;
-		}
+		astNode = parser.parseSourceFile(sourceFile.getSourceCode());
+
 		List<Function> functionAnalysisInfos = sourceFile.getFunctions();
 		if (astNode instanceof CompilationUnit) {
 			CompilationUnit compilationUnit = (CompilationUnit) astNode;
-			SourceCodePicker.getInstance(compilationUnit, sourceCode);
+			SourceCodePicker.getInstance(compilationUnit, sourceFile.getSourceCode());
 
 			// check error while parsing
 			Boolean isError = false;
