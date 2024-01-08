@@ -1,18 +1,19 @@
 package com.jackrevol.models;
 
-import java.util.List;
-
-import org.eclipse.jdt.core.dom.ASTNode;
-
 import com.google.common.collect.Lists;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.jdt.core.dom.ASTNode;
+
+import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("serial")
 @Getter
 @Setter
 public class CodeBlock {
+
+	private UUID id;
 
 	// block's statements
 	private List<ASTNode> statementNodes;
@@ -31,11 +32,14 @@ public class CodeBlock {
 
 
 	public CodeBlock(Function parentFunction) {
+		this.id = UUID.randomUUID();
 		this.statementNodes = Lists.newArrayList();
 		this.predecessors = Lists.newArrayList();
 		this.successors = Lists.newArrayList();
 		this.functions = Lists.newArrayList();
+		this.decisions =  Lists.newArrayList();
 		this.parentFunction = parentFunction;
+		parentFunction.getFunctionControlFlowGraph().addNode(this);
 	}
 
 	public boolean addStatementNode(ASTNode astNode) {
@@ -47,7 +51,11 @@ public class CodeBlock {
 	}
 
 	public boolean addSuccessor(CodeBlock codeBlock) {
+		parentFunction.getFunctionControlFlowGraph().putEdge(this,codeBlock);
 		return this.successors.add(codeBlock);
+
+
+
 	}
 
 
@@ -65,7 +73,11 @@ public class CodeBlock {
 
 	public String getStatementsString(){
 		StringBuilder stringBuilder = new StringBuilder();
-
+		if(this.getPredecessors().isEmpty()){
+			return "entry";
+		}else if(this.getSuccessors().isEmpty()){
+			return "exit";
+		}
 		for(ASTNode statementNode : statementNodes){
 			stringBuilder.append(statementNode.toString());
 		}

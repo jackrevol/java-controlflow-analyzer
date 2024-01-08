@@ -23,6 +23,10 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+
+    testImplementation("org.graphstream:gs-core:2.0")
+    testImplementation("org.graphstream:gs-ui-swing:2.0")
 }
 
 
